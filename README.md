@@ -208,6 +208,9 @@ indent_size = 2
 
 ## Husky
 
+> [!NOTE]
+> Dùng để kiểm tra đã pass các rule của eslint và prettier hay chưa trước khi commit git
+
 ```bash
 bun add husky lint-staged -D
 ```
@@ -252,5 +255,45 @@ _.gitignore_
 .eslintcache
 ```
 
+## CommentLint
+
 > [!NOTE]
-> Dùng để kiểm tra đã pass các rule của eslint và prettier hay chưa trước khi commit git
+> CommitLint ta sẽ đảm bảo được tất cả các commit đều phải có nội dung theo chuẩn (thường sử dụng chuẩn commit của Angular)
+
+_bash(window)_
+
+```bash
+bun add --save-dev @commitlint/config-conventional @commitlint/cli
+```
+
+```bash
+echo "export default { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
+```
+
+```bash
+npm pkg set scripts.commitlint="commitlint --edit"
+```
+
+```bash
+echo "bun run commitlint \${1}" > .husky/commit-msg
+```
+
+Theo chuẩn Angular, 1 commit message sẽ theo cấu trúc như sau: **`type(scope?): subject`**
+
+- `type` ở trên có thể là:
+
+  - `build`: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+  - `ci`: Changes to our CI configuration files and scripts (example scopes: Gitlab CI, Circle, BrowserStack, SauceLabs)
+  - `chore`: add something without touching production code (Eg: update npm dependencies)
+  - `docs`: Documentation only changes
+  - `feat`: A new feature
+  - `fix`: A bug fix
+  - `perf`: A code change that improves performance
+  - `refactor`: A code change that neither fixes a bug nor adds a feature
+  - `revert`: Reverts a previous commit
+  - `style`: Changes that do not affect the meaning of the code (Eg: adding white-space, formatting, missing semi-colons, etc)
+  - `test`: Adding missing tests or correcting existing tests
+
+- `scope` thì là optional, và nếu có thì nó nên là tên của package mà commit hiện tại làm ảnh hưởng. Mình thấy scope thường dùng ở các repository mà chứa nhiều packages dạng monorepo, ví dụ repo của Vue 3, scope sẽ là tên của 1 package nào đó ở folder packages
+
+- `subject` là nội dung của commit
