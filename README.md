@@ -49,10 +49,16 @@ _tsconfig.app.json_
     //...
     "noFallthroughCasesInSwitch": true,
 
-    "baseUrl": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"],
+      "components/*": ["src/components/*"]
+    }
 }
-
 ```
+
+> [!TIP]
+> Lưu ý khi thay đổi paths trong `tsconfig.app.json` mà bị báo lỗi đường dẫn, hãy restart lại server dev để app nó áp dụng được sự thay đổi
 
 _vite.config.ts_
 

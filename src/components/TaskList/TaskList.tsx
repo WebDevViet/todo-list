@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
-import styles from './taskList.module.scss'
-import { TodoTypes } from 'src/PropTypes/todo.proptype'
+import { ChangeEvent } from 'react'
 import { Todo } from 'src/@types/todo.type'
+import { TodoTypes } from 'src/PropTypes/todo.propType'
+import styles from './taskList.module.scss'
 
 interface TaskListProps {
   doneTaskList?: boolean
@@ -11,11 +12,9 @@ interface TaskListProps {
   deleteTodo: (id: string) => void
 }
 
-export default function TaskList(props: TaskListProps) {
-  const { doneTaskList, todos, handleDoneTodo, startEditTodo, deleteTodo } = props
-
-  const onChangeCheckbox = (idTodo: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleDoneTodo(idTodo, event.target.checked)
+export default function TaskList({ doneTaskList, todos, handleDoneTodo, startEditTodo, deleteTodo }: TaskListProps) {
+  const onChangeCheckbox = (idTodo: string) => (e: ChangeEvent<HTMLInputElement>) => {
+    handleDoneTodo(idTodo, e.target.checked)
   }
 
   return (

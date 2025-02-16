@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
-import styles from './taskInput.module.scss'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { Todo } from 'src/@types/todo.type'
-import { TodoTypes } from 'src/PropTypes/todo.proptype'
+import { TodoTypes } from 'src/PropTypes/todo.propType'
+import styles from './taskInput.module.scss'
 
 interface TaskInputProps {
   addTodo: (name: string) => void
@@ -11,12 +11,11 @@ interface TaskInputProps {
   currentTodo: Todo | null
 }
 
-export default function TaskInput(props: TaskInputProps) {
-  const { addTodo, currentTodo, editTodo, finishEditTodo } = props
+export default function TaskInput({ addTodo, currentTodo, editTodo, finishEditTodo }: TaskInputProps) {
   const [name, setName] = useState<string>('')
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (currentTodo) {
       finishEditTodo()
       if (name) setName('')
@@ -26,8 +25,8 @@ export default function TaskInput(props: TaskInputProps) {
     }
   }
 
-  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
     if (currentTodo) {
       editTodo(value)
     } else {
@@ -52,8 +51,8 @@ export default function TaskInput(props: TaskInputProps) {
 }
 
 TaskInput.propTypes = {
-  addTodo: PropTypes.func.isRequired,
-  editTodo: PropTypes.func.isRequired,
-  finishEditTodo: PropTypes.func.isRequired,
+  addTodo: PropTypes.func,
+  editTodo: PropTypes.func,
+  finishEditTodo: PropTypes.func,
   currentTodo: PropTypes.oneOfType([TodoTypes, PropTypes.oneOf([null])])
 }
