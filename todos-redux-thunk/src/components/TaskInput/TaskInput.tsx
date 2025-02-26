@@ -10,16 +10,21 @@ export default function TaskInput() {
   const editingTodo = useSelector((state: RootState) => state.todo.editingTodo)
   const dispatch = useAppDispatch()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!name.trim()) return alert('Please enter a caption')
 
-    if (editingTodo) {
-      dispatch(updateTodo({ ...editingTodo, name }))
-    } else {
-      dispatch(addTodo({ name, done: false }))
+    try {
+      if (editingTodo) {
+        await dispatch(updateTodo({ ...editingTodo, name })).unwrap()
+      } else {
+        await dispatch(addTodo({ name, done: false })).unwrap()
+      }
+    } catch (error) {
+      alert(error)
     }
+
     setName('')
   }
 
